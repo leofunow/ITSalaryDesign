@@ -1,1 +1,59 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 28px;
+  line-height: 34px;
+  margin-bottom: 30px;
+}
+input{
+  font-family: 'Inter', sans-serif;
+}
+input[type="date"]{
+  outline: none;
+  border: 1px solid #D9E1EC;
+  border-radius: 6px;
+  color: #7E84A3;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+input[type="date"]:hover{
+  border: 1px solid #A1A7C4;
+}
+input[type="date"]:focus{
+  border: 1px solid #7E84A3;
+}
+
+.lightgreenspan{
+  background-color: #C4F8E2;
+  color:#047344;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+.lightredspan{
+  background-color: #FDEAE6;
+  color:#CF2600;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+/*input[type="date"]::-webkit-inner-spin-button,*/
+/*input[type="date"]::-webkit-calendar-picker-indicator {*/
+/*  display: none;*/
+/*}*/
+
+.noselect {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
