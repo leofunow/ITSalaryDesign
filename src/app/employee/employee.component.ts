@@ -165,11 +165,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    let cb = document.querySelector('.tabs > button')
-    if (cb) {
-      this.curwidth = cb.clientWidth.toString() + 'px';
-    }
-    this.onResize(null)
+
     }
 
   ngOnInit(): void {
@@ -204,22 +200,17 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-
-    let tds = document.querySelectorAll('tr td');
-    console.log(tds[0].textContent)
-    while (this.tablewidth.length < tds.length) {
-      this.tablewidth.push(1);
-    }
+    let tds = document.querySelectorAll('tr:nth-child(1) td');
+    console.log(tds[0].getBoundingClientRect().width)
     for (let i = 0; i < tds.length; i++) {
-      this.tablewidth[i] = tds[i].clientWidth;
-    //  -i*i/64
+      this.tablewidth[i] = tds[i].getBoundingClientRect().width - 1;
     }
-    // console.log(this.tablewidth);
+    console.log(this.tablewidth);
   }
 
   getTableWidth(x: number) {
-    console.log(this.tablewidth[x].toString() + 'px')
-    return "width:" + (this.tablewidth[x]).toString() + 'px; overflow:hidden;'
+    // console.log(this.tablewidth[x].toString() + 'px')
+    return "width:" + (this.tablewidth[x]).toString() + 'px!important; overflow:hidden;'
   }
 
 }
