@@ -1,0 +1,88 @@
+<div class="datesSearch" style="">
+  <div style="display: flex; height: 48px">
+    <input type="date">
+    <input type="date">
+    <label class="checklabel"> <input type="checkbox" style="display: none">
+      <div></div>
+      <span class="noselect">За предыдущий месяц</span></label>
+    <label class="checklabel"> <input type="checkbox" style="display: none">
+      <div></div>
+      <span class="noselect">Скрыть оценённые</span></label>
+  </div>
+
+</div>
+<div
+  style="width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius: 4px 4px 0 0; border-bottom: none">
+
+  <div class="employeeCard">
+    <div class="employeeIcon">
+      И
+    </div>
+    <div>
+      Иванов Иван Иванович
+    </div>
+  </div>
+  <div class="tabs" style="margin-left: 35px">
+    <button (click)='changetab(0)' [class]="getactivetab(0)">События<span class="redspan">6</span>
+    </button>
+    <button (click)='changetab(1)' [class]="getactivetab(1)">Проекты<span class="redspan">2</span></button>
+    <button (click)='changetab(2)' [class]="getactivetab(2)">Покупки</button>
+    <button (click)='changetab(3)' [class]="getactivetab(3)">Отчёты<span class="redspan">1</span></button>
+    <button (click)='changetab(4)' [class]="getactivetab(4)">Сводка<span class="redspan">7</span></button>
+    <div class="tabsactive"
+         [@tabsAnim]='{value: curtab, params: {cur_width : curwidth, cur_margin_left: curmarginleft}}'>
+    </div>
+  </div>
+  <!--Утвержденные выплаты-->
+</div>
+<div *ngIf="curtab == 0">
+  <div
+    style="width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius: 0 0 0 0; border-bottom: none">
+    <table>
+      <thead>
+      <tr class="headersPlaceholder">
+        <th class="noselect" [style]="getTableWidth(0)">Дата</th>
+        <th class="noselect" [style]="getTableWidth(1)">Событие</th>
+        <th class="noselect" [style]="getTableWidth(2)">Смена</th>
+        <th class="noselect" [style]="getTableWidth(3)">Место</th>
+        <th class="noselect" [style]="getTableWidth(4)">Создатель</th>
+        <th class="noselect" [style]="getTableWidth(5)">Стоимость</th>
+        <th class="noselect" [style]="getTableWidth(6)">Выплата</th>
+        <th class="noselect" [style]="getTableWidth(7)">Статус</th>
+      </tr>
+      </thead>
+    </table>
+  </div>
+  <div
+    class="tablescroll">
+    <table style="height: 100px; overflow: hidden; width: calc(100% + 12px);">
+      <tbody style="overflow-y: scroll; max-height: 40vh;">
+      <tr *ngFor="let v of Viplati">
+        <td style="width: 50px">{{v.date}}</td>
+        <td>{{v.name}}</td>
+        <td width="100">{{v.smena}}</td>
+        <td width="120">{{v.mesto}}</td>
+        <td width="100">{{v.fio}}</td>
+        <td width="100">{{v.moneyExpected}}</td>
+        <td width="100">{{v.moneyGot}}</td>
+        <td width="50"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div
+    style="margin-bottom: 10px;width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius:0 0 4px 4px;">
+    <table style="border-collapse: unset">
+      <thead>
+      <tr>
+        <th>Итого</th>
+        <th>45 000 ₽</th>
+        <th>28 000 ₽</th>
+        <th>182 000 ₽</th>
+        <th>10 000 ₽</th>
+        <th>265 000 ₽</th>
+      </tr>
+      </thead>
+    </table>
+  </div>
+</div>
