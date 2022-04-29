@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { EmployeeComponent } from './employee/employee.component';
 import { MainTableComponent } from './main-table/main-table.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { MainTableComponent } from './main-table/main-table.component';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
