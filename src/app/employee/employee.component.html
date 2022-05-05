@@ -1,21 +1,21 @@
 <div class="datesSearch" style="" xmlns="http://www.w3.org/1999/html">
   <div style="display: flex; height: 48px">
-    <input type="date"/>
-    <input type="date"/>
+    <input type="date" [disabled] = "filters.lastMonth" [(ngModel)]="filters.dateStart" (change)="ChangeClick()"/>
+    <input type="date" [disabled] = "filters.lastMonth" [(ngModel)]="filters.dateEnd" (change)="ChangeClick()"/>
     <label class="checklabel">
-      <input type="checkbox" style="display: none"/>
+      <input type="checkbox" style="display: none" [(ngModel)]="filters.lastMonth" (change)="ChangeClick()"/>
       <div></div>
-      <span class="noselect">За предыдущий месяц</span></label
-    >
+      <span class="noselect">За предыдущий месяц</span></label>
     <label class="checklabel">
-      <input type="checkbox" style="display: none"/>
+      <input type="checkbox" style="display: none" [(ngModel)]="filters.hideMarked" (change)="ChangeClick()"/>
       <div></div>
-      <span class="noselect">Скрыть оценённые</span></label
-    >
+      <span class="noselect">Скрыть оценённые</span></label>
   </div>
 </div>
+<a class="back" routerLink="">К списку сотрудников</a>
 <div
   style="
+    margin-top: 22px;
     width: 100%;
     overflow: hidden;
     border: 1px solid #d7dbec;
@@ -24,8 +24,13 @@
   "
 >
   <div class="employeeCard">
-    <div class="employeeIcon">И</div>
-    <div>Иванов Иван Иванович</div>
+    <div style="display: flex">
+      <div class="employeeIcon">И</div>
+      <div class="employeeName">Иванов Иван Иванович</div>
+    </div>
+    <div style="margin-top: auto; margin-bottom: auto; color: #5A607F;font-weight: 500;">
+      Выплат в ожидании <span class="redspan">7</span>
+    </div>
   </div>
   <div class="tabs" style="margin-left: 35px">
     <button (click)="changetab(0)" [class]="getactivetab(0)">
@@ -52,90 +57,17 @@
   <!--Утвержденные выплаты-->
 </div>
 <div *ngIf="curtab == 0">
-  <div
-    (scroll)="scrolltable()"
-    class="tablescroll"
-    style="
-      width: 100%;
-      overflow-y: scroll;
-      overflow-x: hidden;
-      border-left: 1px solid #d7dbec;
-      border-right: 1px solid #d7dbec;
-      border-bottom: 1px solid #d7dbec;
-      border-radius: 0 0 12px 12px;
-/*margin-bottom: -1px;*/
-      /*border-bottom: none;*/
-      /*padding: 0;*/
-    "
-  >
-    <table class="my_table">
-      <thead class="t_header">
-      <tr class="headersPlaceholder">
-        <th class="noselect">Дата</th>
-        <th class="noselect">Событие</th>
-        <th class="noselect">Смена</th>
-        <th class="noselect">Место</th>
-        <th class="noselect">Создатель</th>
-        <th class="noselect">Стоимость</th>
-        <th class="noselect">Выплата</th>
-        <th class="noselect">Статус</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let v of Viplati">
-        <td>
-          <div style="display: flex; width: max-content">
-            <div style="height:available; display: flex; width: 48px;">
-              <div style="width: 8px; height: 8px; border-radius: 4px; background-color: #F12B43; margin: auto"></div>
-            </div>
-            <div style="text-align: left; font-size: 12px">
-              <span style="color: #5A607F">{{ v.date }}</span><br>
-              <span style="color: #7E84A3">{{v.timeRange}}</span>
-              <div style="border: 1px solid #D7DBEC; border-radius: 5px; width: fit-content; padding: 0 6px">
-                {{v.time}}
-              </div>
-            </div>
-          </div>
-        </td>
-        <td>{{ v.name }}</td>
-        <td style="color: #333752">{{ v.smena }}</td>
-        <td style="color: #333752">{{ v.mesto }} <img src="assets/icons/human.svg"></td>
-        <td style="width: max-content">
-          <span style="color: #5A607F">{{ v.fio }}</span><br>
-          <span style="font-size: 12px">{{v.fiodate}}</span>
-        </td>
-        <td>{{ v.moneyExpected }} ₽</td>
-        <!--        <td><label class="inputText"><input type="text" [value]="v.moneyGot"> ₽</label></td>-->
-        <td><label class="inputText"><span role="textbox" contenteditable="true">{{v.moneyGot}}</span>₽</label></td>
-        <td style="text-align: center">
-          <div style="display: flex; width: 100%; justify-content: center">
-            <button [class]="checkCommentButton(v)" (click)="commentclick(v)"
-                    (focusout)="commentunfocus(v, $event)"></button>
-            <div class="commentWindow" *ngIf="v.isClicked" [style]="getcommentstyle(v)">
-              <textarea (keyup.enter)="submitcomment(v)" placeholder="Введите комментарий и нажмите Enter для сохранения" class="typehere"
-                        (focusout)="commentunfocus(v, $event)" [(ngModel)]="v.commentary"></textarea>
-              <div style="display: flex; justify-content: space-between">
-                <button class="redButton">Отмена</button>
-                <button class="greenButton" (click)="submitcomment(v)">Сохранить</button>
-              </div>
-            </div>
-            <button class="okButton"></button>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-      <thead class="t_footer">
-      <tr style="border: 1px solid #d7dbec;">
-        <th class="borders">Итого</th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th class="borders">126 000 ₽</th>
-        <th class="borders">255 000 ₽</th>
-        <th></th>
-      </tr>
-      </thead>
-    </table>
-  </div>
+  <app-events-table [filter]="filter.asObservable()"></app-events-table>
+</div>
+<div *ngIf="curtab == 1">
+  <app-projects-table></app-projects-table>
+</div>
+<div *ngIf="curtab == 2">
+  <app-purchases-table></app-purchases-table>
+</div>
+<div *ngIf="curtab==3">
+  <app-reports-table></app-reports-table>
+</div>
+<div *ngIf="curtab==4">
+  <app-summary-table></app-summary-table>
 </div>

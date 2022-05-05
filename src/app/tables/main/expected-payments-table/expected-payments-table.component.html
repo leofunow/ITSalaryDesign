@@ -1,0 +1,35 @@
+<div
+  class="tablescroll">
+  <table class="my_table">
+    <thead class="t_header">
+    <tr class="headersPlaceholder">
+      <th class="noselect">ФИО</th>
+      <th class="noselect">Отчёты</th>
+      <th class="noselect">События</th>
+      <th class="noselect">Проекты</th>
+      <th class="noselect">Покупки</th>
+      <th class="noselect">Сумма</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let v of Viplati">
+      <td><span class="redspan">5</span> {{v.fio}}</td>
+      <td><span *ngIf="v.otcheti" class="grayspan"> {{v.otcheti}}</span><span *ngIf="!v.otcheti">—</span></td>
+      <td>{{v.sobitia}} <span *ngIf="v.sobitiacnt" class="grayspan">{{v.sobitiacnt}}</span></td>
+      <td>{{v.proecti}} <span *ngIf="v.proecticnt" class="grayspan">{{v.proecticnt}}</span></td>
+      <td>{{v.pokupki}} <span *ngIf="v.pokupkicnt" class="grayspan">{{v.pokupkicnt}}</span></td>
+      <td><span class="lightredspan">{{v.summa}}</span></td>
+    </tr>
+    </tbody>
+    <thead class="t_footer">
+    <tr style="border: 1px solid #d7dbec;">
+      <th>Итого</th>
+      <th>45 000 ₽</th>
+      <th>28 000 ₽</th>
+      <th>182 000 ₽</th>
+      <th>10 000 ₽</th>
+      <th>265 000 ₽</th>
+    </tr>
+    </thead>
+  </table>
+</div>

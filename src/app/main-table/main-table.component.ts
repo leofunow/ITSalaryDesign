@@ -9,33 +9,26 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
     trigger('tabsAnim', [
       state('0', style({'margin-left': '{{cur_margin_left}}', 'width': '{{cur_width}}'}), {
         params: {
-          cur_width: '270px',
+          cur_width: '300px',
           cur_margin_left: '-1px'
         }
       }),
       state('1', style({'margin-left': '{{cur_margin_left}}', 'width': '{{cur_width}}'}), {
         params: {
-          cur_width: '270px',
+          cur_width: '300px',
           cur_margin_left: '-1px'
         }
       }),
-      state('2', style({'margin-left': '{{cur_margin_left}}', 'width': '{{cur_width}}'}), {
-        params: {
-          cur_width: '270px',
-          cur_margin_left: '-1px'
-        }
-      }),
-      transition('0 <=> 1', animate('0.1s ease')),
-      transition('1 <=> 2', animate('0.1s ease')),
-      transition('0 <=> 2', animate('0.1s ease')),
+      transition('* <=> *', animate('0.1s ease')),
     ]),
   ],
 })
 export class MainTableComponent implements OnInit {
 
-  @Input() curwidth: string = '270px';
+  @Input() curwidth: string = '300px';
   @Input() curmarginleft: string = '-1px';
   curtab = 0;
+  stateswap = 0;
   Viplati = [{
     fio: "Иванов И. И.", otcheti: "5 000 ₽ ", sobitia: "2 000 ₽",
     proecti: "12 000 ₽ ", pokupki: "—", summa: "19 000 ₽"
@@ -120,15 +113,36 @@ export class MainTableComponent implements OnInit {
       proecti: "22 000 ₽ ", pokupki: "2 000 ₽", summa: "27 000 ₽", sobitiacnt: 1, proecticnt: 3, pokupkicnt: 1
     },
   ];
+  buttonsList = ''
 
   constructor() {
+    setTimeout(() => {
+      this.changetab(0);
+    }, 0);
+
+  }
+
+  testfunc() {
+    return '';
   }
 
   ngOnInit(): void {
-    let cb = document.querySelector('.tabs > button')
-    if (cb) {
-      this.curwidth = cb.clientWidth.toString() + 'px';
-    }
+    // let cb = document.querySelector('.tabs > button');
+    // let obs = new MutationObserver((mutationsList, observer)=>{
+    //   if (cb) {
+    //     this.changetab(0);
+    // }
+    // });
+    // if(cb)
+    //   obs.observe(cb, {
+    //   attributes: true,
+    //   childList: true,
+    //   subtree: true
+    // });
+    // if (cb) {
+    //   this.curwidth = cb.clientWidth.toString() + 'px';
+    // }
+
   }
 
   getactivetab(x: number) {
@@ -143,13 +157,14 @@ export class MainTableComponent implements OnInit {
     let tmp = 0;
     let cb = document.querySelectorAll('.tabs button');
     if (cb) {
-      this.curwidth = (cb[x].clientWidth - 2).toString() + 'px';
+      this.curwidth = (cb[x].getBoundingClientRect().width - 2).toString() + 'px';
       for (let i = 0; i < x; i++) {
-        tmp += cb[i].clientWidth;
+        tmp += cb[i].getBoundingClientRect().width;
       }
 
       this.curmarginleft = (tmp - 1).toString() + 'px';
     }
+    this.stateswap = (this.stateswap + 1) % 2
   }
 
 }

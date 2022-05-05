@@ -20,102 +20,62 @@
   </button>
   <button (click)='changetab(1)' [class]="getactivetab(1)">Выплаты в ожидании<span class="redspan">55</span></button>
   <button (click)='changetab(2)' [class]="getactivetab(2)">Мои выплаты</button>
-  <div class="tabsactive" [@tabsAnim]='{value: curtab, params: {cur_width : curwidth, cur_margin_left: curmarginleft}}'>
+  <div class="tabsactive" [@tabsAnim]='{value: stateswap, params: {cur_width : curwidth, cur_margin_left: curmarginleft}}' [innerText]="testfunc()">
   </div>
 </div>
 <!--Утвержденные выплаты-->
 <div *ngIf="curtab == 0">
-  <div
-    style="width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius: 4px 4px 0 0; border-bottom: none">
-    <table>
-      <thead>
-      <tr class="headersPlaceholder">
-        <th class="noselect">ФИО</th>
-        <th class="noselect">Отчёты</th>
-        <th class="noselect">События</th>
-        <th class="noselect">Проекты</th>
-        <th class="noselect">Покупки</th>
-        <th class="noselect">Сумма</th>
-      </tr>
-      </thead>
-    </table>
-  </div>
-  <div
-    class="tablescroll">
-    <table style="height: 100px; overflow: hidden;width: calc(100% + 12px);">
-      <tbody style="overflow-y: scroll; max-height: 40vh;">
-      <tr *ngFor="let v of Viplati">
-        <td><span class="greenspan">5</span>{{v.fio}}</td>
-        <td>{{v.otcheti}}</td>
-        <td>{{v.sobitia}}</td>
-        <td>{{v.proecti}}</td>
-        <td>{{v.pokupki}}</td>
-        <td><span class="lightgreenspan">{{v.summa}}</span></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div
-    style="margin-bottom: 10px;width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius:0 0 4px 4px;">
-    <table style="border-collapse: unset">
-      <thead>
-      <tr>
-        <th>Итого</th>
-        <th>45 000 ₽</th>
-        <th>28 000 ₽</th>
-        <th>182 000 ₽</th>
-        <th>10 000 ₽</th>
-        <th>265 000 ₽</th>
-      </tr>
-      </thead>
-    </table>
-  </div>
+  <app-accepted-payments-table></app-accepted-payments-table>
 </div>
 <!--Выплаты в ожидании-->
 <div *ngIf="curtab == 1">
-  <div
-    style="width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius: 4px 4px 0 0; border-bottom: none">
-    <table>
-      <thead>
-      <tr class="headersPlaceholder">
-        <th class="noselect">ФИО</th>
-        <th class="noselect">Отчёты</th>
-        <th class="noselect">События</th>
-        <th class="noselect">Проекты</th>
-        <th class="noselect">Покупки</th>
-        <th class="noselect">Сумма</th>
-      </tr>
-      </thead>
-    </table>
-  </div>
-  <div class="tablescroll">
-    <table style="height: 100px; overflow: hidden; width: calc(100% + 12px);">
-      <tbody style="overflow-y: scroll; max-height: 40vh;">
-      <tr *ngFor="let v of Viplati1">
-        <td><span class="redspan">5</span>{{v.fio}}</td>
-        <td><span *ngIf="v.otcheti" class="grayspan">{{v.otcheti}}</span><span *ngIf="!v.otcheti">—</span></td>
-        <td>{{v.sobitia}}<span *ngIf="v.sobitiacnt" class="grayspan">{{v.sobitiacnt}}</span></td>
-        <td>{{v.proecti}}<span *ngIf="v.proecticnt" class="grayspan">{{v.proecticnt}}</span></td>
-        <td>{{v.pokupki}}<span *ngIf="v.pokupkicnt" class="grayspan">{{v.pokupkicnt}}</span></td>
-        <td><span class="lightredspan">{{v.summa}}</span></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div
-    style=" margin-bottom: 10px;width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius:0 0 4px 4px;">
-    <table style="border-collapse: unset">
-      <thead>
-      <tr>
-        <th>Итого</th>
-        <th>45 000 ₽</th>
-        <th>28 000 ₽</th>
-        <th>182 000 ₽</th>
-        <th>10 000 ₽</th>
-        <th>265 000 ₽</th>
-      </tr>
-      </thead>
-    </table>
-  </div>
+  <app-expected-payments-table></app-expected-payments-table>
+<!--  <div-->
+<!--    style="width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius: 4px 4px 0 0; border-bottom: none">-->
+<!--    <table>-->
+<!--      <thead>-->
+<!--      <tr class="headersPlaceholder">-->
+<!--        <th class="noselect">ФИО</th>-->
+<!--        <th class="noselect">Отчёты</th>-->
+<!--        <th class="noselect">События</th>-->
+<!--        <th class="noselect">Проекты</th>-->
+<!--        <th class="noselect">Покупки</th>-->
+<!--        <th class="noselect">Сумма</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--    </table>-->
+<!--  </div>-->
+<!--  <div class="tablescroll">-->
+<!--    <table style="height: 100px; overflow: hidden; width: calc(100% + 12px);">-->
+<!--      <tbody style="overflow-y: scroll; max-height: 40vh;">-->
+<!--      <tr *ngFor="let v of Viplati1">-->
+<!--        <td><span class="redspan">5</span>{{v.fio}}</td>-->
+<!--        <td><span *ngIf="v.otcheti" class="grayspan">{{v.otcheti}}</span><span *ngIf="!v.otcheti">—</span></td>-->
+<!--        <td>{{v.sobitia}}<span *ngIf="v.sobitiacnt" class="grayspan">{{v.sobitiacnt}}</span></td>-->
+<!--        <td>{{v.proecti}}<span *ngIf="v.proecticnt" class="grayspan">{{v.proecticnt}}</span></td>-->
+<!--        <td>{{v.pokupki}}<span *ngIf="v.pokupkicnt" class="grayspan">{{v.pokupkicnt}}</span></td>-->
+<!--        <td><span class="lightredspan">{{v.summa}}</span></td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
+<!--  <div-->
+<!--    style=" margin-bottom: 10px;width: 100%; overflow: hidden;border: 1px solid #D7DBEC;border-radius:0 0 4px 4px;">-->
+<!--    <table style="border-collapse: unset">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th>Итого</th>-->
+<!--        <th>45 000 ₽</th>-->
+<!--        <th>28 000 ₽</th>-->
+<!--        <th>182 000 ₽</th>-->
+<!--        <th>10 000 ₽</th>-->
+<!--        <th>265 000 ₽</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--    </table>-->
+<!--  </div>-->
 </div>
 
+<div *ngIf="curtab == 2">
+  <app-my-payments-table></app-my-payments-table>
+</div>

@@ -1,0 +1,102 @@
+<div
+  (scroll)="scrolltable()"
+  class="tablescroll">
+  <table class="my_table">
+    <thead class="t_header">
+    <tr class="headersPlaceholder">
+      <th class="noselect">Дата</th>
+      <th class="noselect">Покупка</th>
+      <th class="noselect">Чек</th>
+      <th class="noselect">Подтверждено</th>
+      <th class="noselect">Стоимость</th>
+      <th class="noselect">Выплата</th>
+      <th class="noselect">Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let v of Viplati">
+      <td>
+        <div style="display: flex; width: max-content">
+          <div style="height:available; display: flex; width: 48px;">
+            <div *ngIf="!v.isSubmitted"
+                 style="width: 8px; height: 8px; border-radius: 4px; background-color: #F12B43; margin: auto"></div>
+            <div *ngIf="v.isSubmitted"
+                 style="width: 8px; height: 8px; border-radius: 4px; background-color: #06A561; margin: auto"></div>
+          </div>
+          <div style="text-align: left; font-size: 12px">
+            <span style="color: #5A607F">{{ v.date }}</span><br>
+            <span style="color: #7E84A3">{{v.timeRange}}</span>
+          </div>
+        </div>
+      </td>
+      <td>{{ v.name }}</td>
+      <td>
+        <div style="display: flex; justify-content: center">
+          <button class="chequeButton" (click)="chequeclick(v)"></button>
+        </div>
+      </td>
+      <td style="width: max-content">
+        <span style="color: #5A607F">{{ v.fio }}</span><br>
+        <span style="font-size: 12px">{{v.fiodate}}</span>
+      </td>
+      <td>{{ v.moneyExpected }} ₽</td>
+      <!--        <td><label class="inputText"><input type="text" [value]="v.moneyGot"> ₽</label></td>-->
+      <td>
+        <label class="inputText" *ngIf="!v.isSubmitted"><span role="textbox"
+                                                              contenteditable="true">{{v.moneyGot}}</span>₽</label>
+        <span class="lightgreenspan" style="white-space: nowrap;" *ngIf="v.isSubmitted">{{v.moneyGot}} ₽</span>
+      </td>
+      <td style="text-align: center">
+        <div style="display: flex; width: 100%; justify-content: center">
+          <button [class]="checkCommentButton(v)" (click)="commentclick(v)"
+                  (focusout)="commentunfocus(v, $event)"></button>
+          <div class="commentWindow" *ngIf="v.isClicked" [style]="getcommentstyle(v)">
+              <textarea (keyup.enter)="submitcomment(v)"
+                        placeholder="Введите комментарий и нажмите Enter для сохранения" class="typehere"
+                        (focusout)="commentunfocus(v, $event)" [(ngModel)]="v.commentary"></textarea>
+            <div style="display: flex; justify-content: space-between">
+              <button class="redButton">Отмена</button>
+              <button class="greenButton" (click)="submitcomment(v)">Сохранить</button>
+            </div>
+          </div>
+          <button class="okButton" (click)="okclick(v)" *ngIf="!v.isSubmitted"></button>
+          <button class="editButton" (click)="editclick(v)" *ngIf="v.isSubmitted"></button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+    <thead class="t_footer">
+    <tr style="border: 1px solid #d7dbec;">
+      <th class="borders">Итого</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th class="borders">126 000 ₽</th>
+      <th class="borders">255 000 ₽</th>
+      <th></th>
+    </tr>
+    </thead>
+  </table>
+</div>
+
+<!--Вывод чека-->
+<div class="grayBackground" *ngIf="curcheque !== -1" (click)="bgclick($event)">
+  <div class="chequeWindow">
+    <div style="display: flex; flex-direction: row; width: 100%;justify-content: space-between">
+      <p style="font-weight: 500;
+              font-size: 18px;
+              color: #5A607F; margin-top: 0; margin-bottom: 20px">
+        Просмотр чека
+      </p>
+      <div class="chequeBack" (click)="curcheque = -1"></div>
+    </div>
+    <div class="chequeFrame">
+      Дата загрузки — 17.01.22 13:25:11
+      <div class="chequeImage">
+
+      </div>
+    </div>
+
+
+  </div>
+</div>

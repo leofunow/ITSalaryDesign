@@ -1,5 +1,18 @@
-import {AfterContentInit, AfterViewChecked, Component, HostListener, Input, OnInit} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component, EventEmitter,
+  HostListener,
+  Input,
+  OnInit, Output
+} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {tick} from "@angular/core/testing";
+import {Subject} from "rxjs";
+import {DatePipe} from "@angular/common";
+import {Filter} from "../models/filter";
 
 @Component({
   selector: 'app-employee',
@@ -25,142 +38,26 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 })
 export class EmployeeComponent implements OnInit {
 
-  @Input() curwidth: string = '270px';
+  @Input() curwidth: string = 'calc( 100% / 5 )';
   @Input() curmarginleft: string = '-1px';
   curtab = 0;
   stateswap = 0;
-  commentheight = 0;
-  curcomment = 0;
-
-  Viplati = [{
-    date: "19.01.2022",
-    timeRange: "11:00 — 14:00",
-    time: "3 часа",
-    name: "Экскурсия для представителей Лиги преподавателей",
-    smena: "Подготовка",
-    mesto: "Сборка двигателя",
-    fio: "Иванов И. И.",
-    fiodate: "01.01.2022 14:32:31",
-    moneyExpected: 1000,
-    moneyGot: 2000,
-    commentary: "",
-    isClicked: false
-  },
-    {
-      date: "19.01.2022",
-      timeRange: "11:00 — 14:00",
-      time: "3 часа",
-      name: "Экскурсия для представителей Лиги преподавателей",
-      smena: "Подготовка",
-      mesto: "Сборка двигателя",
-      fio: "Иванов И. И.",
-      fiodate: "01.01.2022 14:32:31",
-      moneyExpected: 1000,
-      moneyGot: 2000,
-      commentary: "",
-      isClicked: false
-    },
-    {
-      date: "19.01.2022",
-      timeRange: "11:00 — 14:00",
-      time: "3 часа",
-      name: "Экскурсия для представителей Лиги преподавателей",
-      smena: "Подготовка",
-      mesto: "Сборка двигателя",
-      fio: "Иванов И. И.",
-      fiodate: "01.01.2022 14:32:31",
-      moneyExpected: 1000,
-      moneyGot: 2000,
-      commentary: "",
-      isClicked: false
-    },
-    {
-      date: "19.01.2022",
-      timeRange: "11:00 — 14:00",
-      time: "3 часа",
-      name: "Экскурсия для представителей Лиги преподавателей",
-      smena: "Подготовка",
-      mesto: "Сборка двигателя",
-      fio: "Иванов И. И.",
-      fiodate: "01.01.2022 14:32:31",
-      moneyExpected: 1000,
-      moneyGot: 2000,
-      commentary: "",
-      isClicked: false
-    },
-    {
-      date: "19.01.2022",
-      timeRange: "11:00 — 14:00",
-      time: "3 часа",
-      name: "Экскурсия для представителей Лиги преподавателей",
-      smena: "Подготовка",
-      mesto: "Сборка двигателя",
-      fio: "Иванов И. И.",
-      fiodate: "01.01.2022 14:32:31",
-      moneyExpected: 1000,
-      moneyGot: 2000,
-      commentary: "",
-      isClicked: false
-    },
-    {
-      date: "19.01.2022",
-      timeRange: "11:00 — 14:00",
-      time: "3 часа",
-      name: "Экскурсия для представителей Лиги преподавателей",
-      smena: "Подготовка",
-      mesto: "Сборка двигателя",
-      fio: "Иванов И. И.",
-      fiodate: "01.01.2022 14:32:31",
-      moneyExpected: 1000,
-      moneyGot: 2000,
-      commentary: "",
-      isClicked: false
-    },
-    {
-      date: "19.01.2022",
-      timeRange: "11:00 — 14:00",
-      time: "3 часа",
-      name: "Экскурсия для представителей Лиги преподавателей",
-      smena: "Подготовка",
-      mesto: "Сборка двигателя",
-      fio: "Иванов И. И.",
-      fiodate: "01.01.2022 14:32:31",
-      moneyExpected: 1000,
-      moneyGot: 2000,
-      commentary: "",
-      isClicked: false
-    },
-    {
-      date: "19.01.2022",
-      timeRange: "11:00 — 14:00",
-      time: "3 часа",
-      name: "Экскурсия для представителей Лиги преподавателей",
-      smena: "Подготовка",
-      mesto: "Сборка двигателя",
-      fio: "Иванов И. И.",
-      fiodate: "01.01.2022 14:32:31",
-      moneyExpected: 1000,
-      moneyGot: 2000,
-      commentary: "",
-      isClicked: false
-    },
-  ];
-
-  Viplati1 = [{
-    fio: "Иванов И. И.", otcheti: 0, sobitia: "2 000 ₽",
-    proecti: "12 000 ₽ ", pokupki: "—", summa: "14 000 ₽", sobitiacnt: 1, proecticnt: 1, pokupkicnt: 0
-  },
-  ];
-
+  filters:Filter = {dateStart: '1970-01-01', dateEnd: '0-0-0', lastMonth: false, hideMarked: false};
+  @Output() filter: Subject<Filter> = new Subject<Filter>();
 
   constructor() {
+    let tmp = new Date().toLocaleDateString().split('.');
+    this.filters.dateEnd = tmp[2]+'-'+tmp[1]+'-'+tmp[0];
+    setTimeout(() => {
+      this.changetab(0)
+    }, 0);
+  }
+
+  ChangeClick() {
+    this.filter.next(this.filters);
   }
 
   ngOnInit(): void {
-    let cb = document.querySelector('.tabs > button')
-    if (cb) {
-      this.curwidth = cb.clientWidth.toString() + 'px';
-    }
   }
 
   getactivetab(x: number) {
@@ -185,63 +82,5 @@ export class EmployeeComponent implements OnInit {
     this.stateswap = (this.stateswap + 1) % 2
   }
 
-  commentclick(v: any) {
-    let flag = this.Viplati[this.Viplati.indexOf(v)].isClicked;
-
-    this.Viplati[this.Viplati.indexOf(v)].isClicked = !flag;
-    if (document.activeElement instanceof HTMLElement && flag)
-    {
-      document.activeElement.blur();
-      this.Viplati[this.Viplati.indexOf(v)].isClicked = false;
-    }
-  }
-
-  commentunfocus(v: any, event: any){
-    let cb = document.querySelector('tbody tr:nth-child('
-      + (this.Viplati.indexOf(v) + 1).toString()
-      + ') td:last-child textarea');
-    let cb2 = document.querySelectorAll('tbody tr:nth-child('
-      + (this.Viplati.indexOf(v) + 1).toString()
-      + ') td:last-child button');
-    // console.log(cb);
-    // console.log(event.relatedTarget)
-    let flag = this.Viplati[this.Viplati.indexOf(v)].isClicked;
-    if (document.activeElement instanceof HTMLElement && flag && event.relatedTarget != cb)
-    {
-      document.activeElement.blur();
-      this.Viplati[this.Viplati.indexOf(v)].isClicked = false;
-    }
-  }
-
-  getcommentstyle(v: any) {
-    this.curcomment=this.Viplati.indexOf(v);
-    let cb = document.querySelector('tbody tr:nth-child(' + (this.Viplati.indexOf(v) + 1).toString() + ')')
-    if (cb) {
-      this.commentheight = cb.getBoundingClientRect().top + cb.getBoundingClientRect().height/2-230;
-      // console.log(cb.getBoundingClientRect());
-      return 'top:' + (this.commentheight).toString()
-        + 'px;left:' + (cb.getBoundingClientRect().width + cb.getBoundingClientRect().left - 240).toString() + 'px;';
-    }
-    return ''
-
-  }
-  scrolltable(){
-    let cb = document.querySelector('tbody tr:nth-child(' + (this.curcomment + 1).toString() + ')')
-    if (cb)
-      this.commentheight = cb.getBoundingClientRect().top + cb.getBoundingClientRect().height/2-230;
-  }
-  checkCommentButton(v: any) {
-    if(this.Viplati[this.Viplati.indexOf(v)].isClicked)
-      return 'commentButtonActive';
-    return 'commentButton';
-  }
-  submitcomment(v:any){
-    // console.log(v.commentary)
-    if (document.activeElement instanceof HTMLElement)
-    {
-      document.activeElement.blur();
-      this.Viplati[this.Viplati.indexOf(v)].isClicked = false;
-    }
-  }
 
 }
